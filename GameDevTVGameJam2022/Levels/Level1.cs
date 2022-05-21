@@ -15,7 +15,7 @@ namespace GameDevTVGameJam2022
 
         public override void Update(GameTime gameTime)
         {
-            test
+            //test
         }
         public override void Draw(SpriteBatch batch)
         {
