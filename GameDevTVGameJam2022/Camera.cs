@@ -27,6 +27,5 @@ namespace GameDevTVGameJam2022
                 Matrix.CreateTranslation(new Vector3(-centre.X, -centre.Y, 0));
 
         }
-
     }
 }

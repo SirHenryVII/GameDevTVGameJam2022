@@ -7,7 +7,7 @@ namespace GameDevTVGameJam2022
     public class Game1 : Game
     {
         public static GraphicsDeviceManager Graphics;
-        public static SpriteBatch SpriteBatch;
+        private SpriteBatch SpriteBatch;
         public static Camera camera;
 
         public Game1()
@@ -30,6 +30,7 @@ namespace GameDevTVGameJam2022
 
             //innit Camera
             camera = new Camera(GraphicsDevice.Viewport);
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -37,7 +38,8 @@ namespace GameDevTVGameJam2022
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            //Update Camera
+            camera.setPos(new Vector2(0));
 
             base.Update(gameTime);
         }
