@@ -11,47 +11,77 @@ namespace GameDevTVGameJam2022
     public class Player
     {
         public Texture2D image;
-        public Vector2 position;
         public Color tint;
 
-        public Rectangle HitBox { get => new Rectangle((int)(position.X), (int)(position.Y), image.Width, image.Height); }
+        public Rectangle HitBox;
         public Vector2 velocity;
+        public Boolean onGround;
+        public SpriteEffects direction;
 
         private float velocityCapX = 10f;
 
         KeyboardState prevKeyboardState = Keyboard.GetState();
 
-        public Player(Texture2D Image, Vector2 Postion, Color Tint)
+        public Player(Texture2D Image, Vector2 pos, Color Tint, int scale)
         {
             image = Image;
-            position = Postion;
             tint = Tint;
+            HitBox = new Rectangle((int)pos.X, (int)pos.Y, Image.Width * scale, Image.Height * scale);
+            direction = SpriteEffects.None;
         }
 
         public void Update(GameTime gameTime)
         {
-            //Left and Right
+            //Collision Logic
+            if (HitBox.Bottom > Game1.Graphics.PreferredBackBufferHeight)
+            {
+                onGround = true;
+                velocity.Y = 0;
+            }
+
+            //Slow Velocity X
+            if (velocity.X >= 1 && !Keyboard.GetState().IsKeyDown(Keys.A) && !Keyboard.GetState().IsKeyDown(Keys.D))
+            {
+                velocity.X -= 0.6f;
+            }
+            else if (velocity.X <= -1 && !Keyboard.GetState().IsKeyDown(Keys.D) && !Keyboard.GetState().IsKeyDown(Keys.A))
+            {
+                velocity.X += 0.6f;
+            }
+            else if(velocity.X >= 1 && velocity.X <= -1)
+            {
+                velocity.X = 0;
+            }
+
+            //Gravity
+            if (!onGround)
+            {
+                velocity.Y += 1;
+            }
+
+            //Inputs
             if (Keyboard.GetState().IsKeyDown(Keys.D) && velocity.X < velocityCapX)
             {
-                velocity.X++;
+                if (onGround) velocity.X += 2;
+                else velocity.X += 1;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A) && velocity.X > velocityCapX * -1)
             {
-                velocity.X--;
+                if (onGround) velocity.X -= 2;
+                else velocity.X -= 1;
             }
-
-            //Up
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && onGround)
             {
-                velocity.Y--;
+                velocity.Y = -25;
+                onGround = false;
             }
-
+            if(Keyboard.GetState().IsKeyDown(Keys.LeftShift))
 
 
             prevKeyboardState = Keyboard.GetState();
 
-            position.X += velocity.X;
-            position.Y += velocity.Y;
+            HitBox.X += (int)(velocity.X * 1.0);
+            HitBox.Y += (int)(velocity.Y * 1.0);
         }
 
         public void Draw(SpriteBatch batch)

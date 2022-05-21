@@ -47,7 +47,7 @@ namespace GameDevTVGameJam2022
             camera = new Camera(GraphicsDevice.Viewport);
 
             //innit Player
-            player = new Player(Content.Load<Texture2D>("benBoi"), new Vector2(400), Color.White);
+            player = new Player(Content.Load<Texture2D>("benBoi"), new Vector2(400), Color.White, 1);
         }
 
         protected override void Update(GameTime gameTime)
