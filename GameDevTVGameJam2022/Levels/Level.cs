@@ -10,6 +10,8 @@ namespace GameDevTVGameJam2022
 {
     public abstract class Level
     {
+        public Texture2D test;
+
         public Level()
         {
         }
