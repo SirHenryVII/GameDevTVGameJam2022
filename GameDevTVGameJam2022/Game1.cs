@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace GameDevTVGameJam2022
 {
@@ -9,6 +10,19 @@ namespace GameDevTVGameJam2022
         public static GraphicsDeviceManager Graphics;
         private SpriteBatch SpriteBatch;
         public static Camera camera;
+
+        public Player player;
+
+        #region Functions
+
+        public void ChangeResolution(int width, int height)
+        {
+            Graphics.PreferredBackBufferWidth = width;
+            Graphics.PreferredBackBufferHeight = height;
+            Graphics.ApplyChanges();
+        }
+
+        #endregion
 
         public Game1()
         {
@@ -21,6 +35,7 @@ namespace GameDevTVGameJam2022
         {
             // TODO: Add your initialization logic here
 
+            ChangeResolution(1920, 1080);
             base.Initialize();
         }
 
@@ -31,6 +46,8 @@ namespace GameDevTVGameJam2022
             //innit Camera
             camera = new Camera(GraphicsDevice.Viewport);
 
+            //innit Player
+            player = new Player(Content.Load<Texture2D>("benBoi"), new Vector2(400), Color.White);
         }
 
         protected override void Update(GameTime gameTime)
@@ -41,6 +58,13 @@ namespace GameDevTVGameJam2022
             //Update Camera
             camera.setPos(new Vector2(0));
 
+            if (Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.Right) || Keyboard.GetState().IsKeyDown(Keys.Up)|| Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                throw new Exception("stop it");
+            }
+
+            player.Update(gameTime);
+
             base.Update(gameTime);
         }
 
@@ -49,6 +73,9 @@ namespace GameDevTVGameJam2022
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
+
+            player.Draw(SpriteBatch);
+
             SpriteBatch.End();
 
             base.Draw(gameTime);
