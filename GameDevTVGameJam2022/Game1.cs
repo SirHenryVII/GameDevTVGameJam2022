@@ -47,7 +47,7 @@ namespace GameDevTVGameJam2022
             camera = new Camera(GraphicsDevice.Viewport);
 
             //innit Player
-            player = new Player(Content.Load<Texture2D>("benBoi"), new Vector2(400), Color.White, 1);
+            player = new Player(Content.Load<Texture2D>("benBoi"), new Vector2(400), Color.White, 0.5);
         }
 
         protected override void Update(GameTime gameTime)
@@ -57,11 +57,6 @@ namespace GameDevTVGameJam2022
 
             //Update Camera
             camera.setPos(new Vector2(0));
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.Right) || Keyboard.GetState().IsKeyDown(Keys.Up)|| Keyboard.GetState().IsKeyDown(Keys.Down))
-            {
-                throw new Exception("stop it");
-            }
 
             player.Update(gameTime);
 

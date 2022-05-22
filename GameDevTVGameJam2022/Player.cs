@@ -17,17 +17,17 @@ namespace GameDevTVGameJam2022
         public Vector2 velocity;
         public Boolean onGround;
         public SpriteEffects direction;
+        public bool Alive;
 
         private float velocityCapX = 10f;
 
-        KeyboardState prevKeyboardState = Keyboard.GetState();
-
-        public Player(Texture2D Image, Vector2 pos, Color Tint, int scale)
+        public Player(Texture2D Image, Vector2 pos, Color Tint, double scale)
         {
             image = Image;
             tint = Tint;
-            HitBox = new Rectangle((int)pos.X, (int)pos.Y, Image.Width * scale, Image.Height * scale);
+            HitBox = new Rectangle((int)pos.X, (int)pos.Y, (int)(Image.Width * scale), (int)(Image.Height * scale));
             direction = SpriteEffects.None;
+            Alive = true;
         }
 
         public void Update(GameTime gameTime)
@@ -42,11 +42,13 @@ namespace GameDevTVGameJam2022
             //Slow Velocity X
             if (velocity.X >= 1 && !Keyboard.GetState().IsKeyDown(Keys.A) && !Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                velocity.X -= 0.6f;
+                if (onGround) velocity.X -= 0.6f;
+                else velocity.X -= 0.2f;
             }
             else if (velocity.X <= -1 && !Keyboard.GetState().IsKeyDown(Keys.D) && !Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                velocity.X += 0.6f;
+                if (onGround) velocity.X += 0.6f;
+                else velocity.X += 0.2f;
             }
             else if(velocity.X >= 1 && velocity.X <= -1)
             {
@@ -64,21 +66,19 @@ namespace GameDevTVGameJam2022
             {
                 if (onGround) velocity.X += 2;
                 else velocity.X += 1;
+                direction = SpriteEffects.None;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A) && velocity.X > velocityCapX * -1)
             {
                 if (onGround) velocity.X -= 2;
                 else velocity.X -= 1;
+                direction = SpriteEffects.FlipHorizontally;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && onGround)
             {
-                velocity.Y = -25;
+                velocity.Y = -19;
                 onGround = false;
             }
-            if(Keyboard.GetState().IsKeyDown(Keys.LeftShift))
-
-
-            prevKeyboardState = Keyboard.GetState();
 
             HitBox.X += (int)(velocity.X * 1.0);
             HitBox.Y += (int)(velocity.Y * 1.0);
