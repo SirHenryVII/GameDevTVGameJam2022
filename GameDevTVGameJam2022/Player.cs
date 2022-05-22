@@ -15,7 +15,7 @@ namespace GameDevTVGameJam2022
 
         public Rectangle HitBox;
         public Vector2 velocity;
-        public Boolean onGround;
+        public bool onGround;
         public SpriteEffects direction;
         public bool Alive;
 
