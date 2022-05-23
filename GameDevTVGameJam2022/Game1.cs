@@ -1,7 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 
 namespace GameDevTVGameJam2022
 {
@@ -10,8 +13,8 @@ namespace GameDevTVGameJam2022
         public static GraphicsDeviceManager Graphics;
         private SpriteBatch SpriteBatch;
         public static Camera camera;
-
-        public Player player;
+        public static Level currentLevel;
+        public static List<Texture2D> Player = new List<Texture2D>();
 
         #region Functions
 
@@ -46,8 +49,11 @@ namespace GameDevTVGameJam2022
             //innit Camera
             camera = new Camera(GraphicsDevice.Viewport);
 
-            //innit Player
-            player = new Player(Content.Load<Texture2D>("benBoi"), new Vector2(400), Color.White, 0.5);
+            //Load Textures
+            Player.Add(Content.Load<Texture2D>("benBoi"));
+
+            //Load Level TEMP
+            currentLevel = new Level1();
         }
 
         protected override void Update(GameTime gameTime)
@@ -58,7 +64,8 @@ namespace GameDevTVGameJam2022
             //Update Camera
             camera.setPos(new Vector2(0));
 
-            player.Update(gameTime);
+            //Update Level
+            currentLevel.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -69,7 +76,8 @@ namespace GameDevTVGameJam2022
 
             SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
 
-            player.Draw(SpriteBatch);
+            //Draw Level
+            currentLevel.Draw(SpriteBatch);
 
             SpriteBatch.End();
 

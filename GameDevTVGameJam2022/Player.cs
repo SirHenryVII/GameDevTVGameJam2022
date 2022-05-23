@@ -18,16 +18,18 @@ namespace GameDevTVGameJam2022
         public bool onGround;
         public SpriteEffects direction;
         public bool Alive;
+        public int Lives;
 
         private float velocityCapX = 10f;
 
-        public Player(Texture2D Image, Vector2 pos, Color Tint, double scale)
+        public Player(Vector2 pos, Color Tint, double scale, int lives)
         {
-            image = Image;
+            image = Game1.Player[0];
             tint = Tint;
-            HitBox = new Rectangle((int)pos.X, (int)pos.Y, (int)(Image.Width * scale), (int)(Image.Height * scale));
+            HitBox = new Rectangle((int)pos.X, (int)pos.Y, (int)(image.Width * scale), (int)(image.Height * scale));
             direction = SpriteEffects.None;
             Alive = true;
+            Lives = lives;
         }
 
         public void Update(GameTime gameTime)
@@ -76,7 +78,7 @@ namespace GameDevTVGameJam2022
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && onGround)
             {
-                velocity.Y = -19;
+                velocity.Y = -20;
                 onGround = false;
             }
 

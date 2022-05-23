@@ -10,12 +10,21 @@ namespace GameDevTVGameJam2022
 {
     public abstract class Level
     {
-        public Texture2D test;
+        public List<Tile> AliveTileList = new List<Tile>();
+        public List<Tile> DeadTileList = new List<Tile>();
+        public List<Tile> AliveHurtTileList = new List<Tile>();
+        public List<Tile> DeadHurtTileList = new List<Tile>();
 
-        public Level()
+        public Player player;
+
+        public Level(int lives)
         {
+            player = new Player(new Vector2(400), Color.White, 0.5, 3);
         }
         public abstract void Update(GameTime gameTime);
+        public abstract void UpdateDead(GameTime gameTime);
         public abstract void Draw(SpriteBatch batch);
+        public abstract void DrawDead(SpriteBatch batch);
+
     }
 }
