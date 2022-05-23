@@ -50,6 +50,7 @@ namespace GameDevTVGameJam2022
             camera = new Camera(GraphicsDevice.Viewport);
 
             //Load Textures
+            Player.Add(Content.Load<Texture2D>("pixel"));
             Player.Add(Content.Load<Texture2D>("benBoi"));
 
             //Load Level TEMP
@@ -65,7 +66,8 @@ namespace GameDevTVGameJam2022
             camera.setPos(new Vector2(0));
 
             //Update Level
-            currentLevel.Update(gameTime);
+            if (currentLevel.player.Alive) currentLevel.UpdateDead(gameTime);
+            else currentLevel.UpdateDead(gameTime);
 
             base.Update(gameTime);
         }
@@ -77,7 +79,8 @@ namespace GameDevTVGameJam2022
             SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
 
             //Draw Level
-            currentLevel.Draw(SpriteBatch);
+            if (currentLevel.player.Alive) currentLevel.Draw(SpriteBatch);
+            else currentLevel.DrawDead(SpriteBatch);
 
             SpriteBatch.End();
 

@@ -22,7 +22,10 @@ namespace GameDevTVGameJam2022
         }
 
         public abstract void Update(GameTime gametime);
-        public abstract void Draw(GameTime gametime);
+        public void Draw(SpriteBatch batch)
+        {
+            batch.Draw(Image, HitBox, Color.White);
+        }
 
     }
 }

@@ -6,12 +6,16 @@ using System.Text;
 
 namespace GameDevTVGameJam2022
 {
-    public class Level1 : Level
+    public class AlivePlatform : Tile
     {
-        public Level1() : base(3)
+        public AlivePlatform() : base(new Vector2(0, 0), Game1.Player[0], 1, true)
         {
-            AliveTileList.Add(new AlivePlatform());
+
         }
 
+        public override void Update(GameTime gametime)
+        {
+
+        }
     }
 }
