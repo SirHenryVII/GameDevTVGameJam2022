@@ -19,6 +19,8 @@ namespace GameDevTVGameJam2022
         public SpriteEffects direction;
         public bool Alive;
         public int Lives;
+        public bool dashPressed;
+        private int dashCounter;
 
         private float velocityCapX = 10f;
 
@@ -28,7 +30,7 @@ namespace GameDevTVGameJam2022
             tint = Tint;
             HitBox = new Rectangle((int)pos.X, (int)pos.Y, (int)(image.Width * scale), (int)(image.Height * scale));
             direction = SpriteEffects.None;
-            Alive = true;
+            Alive = false;
             Lives = lives;
         }
 
@@ -42,12 +44,12 @@ namespace GameDevTVGameJam2022
             }
 
             //Slow Velocity X
-            if (velocity.X >= 1 && !Keyboard.GetState().IsKeyDown(Keys.A) && !Keyboard.GetState().IsKeyDown(Keys.D))
+            if (velocity.X >= 1)
             {
                 if (onGround) velocity.X -= 0.6f;
                 else velocity.X -= 0.2f;
             }
-            else if (velocity.X <= -1 && !Keyboard.GetState().IsKeyDown(Keys.D) && !Keyboard.GetState().IsKeyDown(Keys.A))
+            else if (velocity.X <= -1)
             {
                 if (onGround) velocity.X += 0.6f;
                 else velocity.X += 0.2f;
@@ -81,9 +83,26 @@ namespace GameDevTVGameJam2022
                 velocity.Y = -20;
                 onGround = false;
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) && !dashPressed && Alive && dashCounter > 30)
+            {
+                if (direction == SpriteEffects.None) velocity.X = 23;
+                else velocity.X = -23;
+                dashPressed = true;
+                dashCounter = 0;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) && Keyboard.GetState().IsKeyDown(Keys.W) && !dashPressed && !Alive && dashCounter > 30)
+            {
+                velocity.Y = -25;
+                dashPressed = true;
+                onGround = false;
+                dashCounter = 0;
+            }
+            if (dashPressed && !Keyboard.GetState().IsKeyDown(Keys.LeftShift) && onGround) dashPressed = false;
 
             HitBox.X += (int)(velocity.X * 1.0);
             HitBox.Y += (int)(velocity.Y * 1.0);
+
+            dashCounter += 1;
         }
 
         public void Draw(SpriteBatch batch)
