@@ -8,9 +8,9 @@ namespace GameDevTVGameJam2022
 {
     public class AlivePlatform : Tile
     {
-        public AlivePlatform() : base(new Vector2(0, 0), Game1.Player[0], 1, true)
+        public AlivePlatform(Vector2 pos, int scale) : base(Game1.Player[0])
         {
-
+            HitBox = new Rectangle((int)pos.X, (int)pos.Y, Image.Width * scale, Image.Height * scale);
         }
 
         public override void Update(GameTime gametime)

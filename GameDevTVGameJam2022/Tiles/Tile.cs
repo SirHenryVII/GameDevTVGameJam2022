@@ -14,11 +14,9 @@ namespace GameDevTVGameJam2022
         public Texture2D Image;
         public bool Alive;
 
-        public Tile(Vector2 pos, Texture2D image, int scale, bool alive)
+        public Tile(Texture2D image)
         {
-            HitBox = new Rectangle((int)pos.X, (int)pos.Y, image.Width * scale, image.Height * scale);
             Image = image;
-            Alive = alive;
         }
 
         public abstract void Update(GameTime gametime);
