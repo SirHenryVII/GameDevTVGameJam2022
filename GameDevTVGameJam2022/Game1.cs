@@ -14,7 +14,6 @@ namespace GameDevTVGameJam2022
         private SpriteBatch SpriteBatch;
         public static Camera camera;
         public static Level currentLevel;
-        public static List<Texture2D> Player = new List<Texture2D>();
 
         #region Functions
 
@@ -50,8 +49,7 @@ namespace GameDevTVGameJam2022
             camera = new Camera(GraphicsDevice.Viewport);
 
             //Load Textures
-            Player.Add(Content.Load<Texture2D>("pixel"));
-            Player.Add(Content.Load<Texture2D>("benBoi"));
+            Textures.LoadTextures(Content);
 
             //Load Level TEMP
             currentLevel = new Level1();

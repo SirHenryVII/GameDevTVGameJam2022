@@ -21,7 +21,6 @@ namespace GameDevTVGameJam2022
         }
         public void Update(GameTime gameTime)
         {
-            player.Update(gameTime);
 
             if (player.Alive)
             {
@@ -37,10 +36,12 @@ namespace GameDevTVGameJam2022
                     tile.Update(gameTime);
                 }
             }
+            player.Update(gameTime);
         }
 
         public void Draw(SpriteBatch batch)
         {
+
             if (player.Alive)
             {
                 foreach (Tile tile in AliveTileList)

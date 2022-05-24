@@ -10,7 +10,7 @@ namespace GameDevTVGameJam2022
     {
         public Level1() : base(3)
         {
-            AliveTileList.Add(new AlivePlatform(new Vector2(450, 1000), 100));
+            AliveTileList.Add(new AlivePlatform(new Vector2(450, 1000), 5, true));
         }
 
     }

@@ -16,6 +16,7 @@ namespace GameDevTVGameJam2022
             Walking,
             Jumping,
             Dashing,
+            DashingUp,
         }
         PlayerStates playerState = PlayerStates.Idle;
 
@@ -43,8 +44,8 @@ namespace GameDevTVGameJam2022
 
         public Player(Vector2 pos, Color Tint, double scale, int lives)
         {
-            image = Game1.Player[1];
-            pixel = Game1.Player[0];
+            image = Textures.Player;
+            pixel = Textures.Pixel;
             tint = Tint;
             HitBox = new Rectangle((int)pos.X, (int)pos.Y, (int)(image.Width * scale), (int)(image.Height * scale));
             direction = SpriteEffects.None;
@@ -61,44 +62,46 @@ namespace GameDevTVGameJam2022
             Rectangle FloorPlayerHitBox = new Rectangle(HitBox.X, HitBox.Y + (int)(image.Height * imageScale) - 10, (int)(image.Width * imageScale), 10);
             if (Alive)
             {
+                bool check = false;
                 foreach(Tile tile in Game1.currentLevel.AliveTileList)
                 {
                     if (FloorPlayerHitBox.Intersects(tile.HitBox) && velocity.Y >= 0)
                     {
                         onGround = true;
                         velocity.Y = 0;
+                        check = true;
+                        HitBox.Y = tile.HitBox.Top - (int)(image.Height * imageScale);
                     }
                 }
-
-
-                //foreach (Tile tile in Game1.currentLevel.AliveHurtTileList)
-                //{
-                //    if (FloorPlayerHitBox.Intersects(tile.HitBox) & velocity.Y >= 0)
-                //    {
-                //        Lives -= 1;
-                //        Alive = false;
-                //        onGround = true;
-                //        velocity.Y = 0;
-                //    }
-                //}
+                if (!check)
+                {
+                    onGround = false;
+                }
             }
             else
             {
+                bool check = false;
                 foreach (Tile tile in Game1.currentLevel.DeadTileList)
                 {
                     if (FloorPlayerHitBox.Intersects(tile.HitBox) & velocity.Y >= 0)
                     {
                         onGround = true;
                         velocity.Y = 0;
+                        check = true;
+                        HitBox.Y = tile.HitBox.Top - (int)(image.Height * imageScale);
                     }
                 }
+                if (!check)
+                {
+                    onGround = false;
+                }
             }
-
+            //Set dashReady
             if (!dashReady && playerState != PlayerStates.Dashing && onGround)
             {
                 dashReady = true;
             }
-
+            
             if (playerState != PlayerStates.Dashing)
             {
                 #region Slow Velocity X
@@ -153,7 +156,7 @@ namespace GameDevTVGameJam2022
 
                     velocity.Y = 0;
                     if (direction == SpriteEffects.None) velocity.X = 23;
-                    else velocity.X = -23;
+                    else velocity.X = -28;
 
                     dashTimeElapsed = TimeSpan.Zero;
                 }
