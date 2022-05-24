@@ -30,8 +30,9 @@ namespace GameDevTVGameJam2022
         public int Lives;
 
         bool dashReady = true;
-        TimeSpan dashInterval = TimeSpan.FromMilliseconds(500);
+        TimeSpan dashInterval = TimeSpan.FromMilliseconds(100);
         TimeSpan dashTimeElapsed = TimeSpan.Zero;
+        TimeSpan startTime;
 
         public Rectangle deathCounterRect;
         private int deathCounter;
@@ -68,6 +69,7 @@ namespace GameDevTVGameJam2022
                         velocity.Y = 0;
                     }
                 }
+
 
                 //foreach (Tile tile in Game1.currentLevel.AliveHurtTileList)
                 //{
@@ -152,6 +154,8 @@ namespace GameDevTVGameJam2022
                     velocity.Y = 0;
                     if (direction == SpriteEffects.None) velocity.X = 23;
                     else velocity.X = -23;
+
+                    dashTimeElapsed = TimeSpan.Zero;
                 }
                 #endregion
 
@@ -167,7 +171,7 @@ namespace GameDevTVGameJam2022
             }
             else 
             {
-                if (dashInterval >= dashTimeElapsed)
+                if (dashTimeElapsed >= dashInterval)
                 {
                     playerState = PlayerStates.Idle;
 
@@ -177,7 +181,7 @@ namespace GameDevTVGameJam2022
                     }
                 }
 
-                dashInterval = gameTime.ElapsedGameTime;
+                dashTimeElapsed += gameTime.ElapsedGameTime;
             }
 
 
