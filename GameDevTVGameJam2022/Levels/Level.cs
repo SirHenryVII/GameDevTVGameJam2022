@@ -12,7 +12,6 @@ namespace GameDevTVGameJam2022
     {
         public List<Tile> AliveTileList = new List<Tile>();
         public List<Tile> DeadTileList = new List<Tile>();
-        public List<Tile> AliveHurtTileList = new List<Tile>();
 
         public Player player;
 
@@ -24,48 +23,40 @@ namespace GameDevTVGameJam2022
         {
             player.Update(gameTime);
 
-            foreach(Tile tile in AliveTileList)
+            if (player.Alive)
             {
-                tile.Update(gameTime);
+                foreach (Tile tile in AliveTileList)
+                {
+                    tile.Update(gameTime);
+                }
             }
-
-            foreach (Tile tile in AliveHurtTileList)
+            else
             {
-                tile.Update(gameTime);
-            }
-        }
-        public void UpdateDead(GameTime gameTime)
-        {
-            player.Update(gameTime);
-
-            foreach (Tile tile in DeadTileList)
-            {
-                tile.Update(gameTime);
+                foreach (Tile tile in DeadTileList)
+                {
+                    tile.Update(gameTime);
+                }
             }
         }
+
         public void Draw(SpriteBatch batch)
         {
+            if (player.Alive)
+            {
+                foreach (Tile tile in AliveTileList)
+                {
+                    tile.Draw(batch);
+                }
+            }
+            else
+            {
+                foreach (Tile tile in DeadTileList)
+                {
+                    tile.Draw(batch);
+                }
+            }
+
             player.Draw(batch);
-
-            foreach (Tile tile in AliveTileList)
-            {
-                tile.Draw(batch);
-            }
-
-            foreach (Tile tile in AliveHurtTileList)
-            {
-                tile.Draw(batch);
-            }
         }
-        public void DrawDead(SpriteBatch batch)
-        {
-            player.Draw(batch);
-
-            foreach (Tile tile in DeadTileList)
-            {
-                tile.Draw(batch);
-            }
-        }
-
     }
 }

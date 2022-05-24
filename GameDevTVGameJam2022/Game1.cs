@@ -66,8 +66,8 @@ namespace GameDevTVGameJam2022
             camera.setPos(new Vector2(0));
 
             //Update Level
-            if (currentLevel.player.Alive) currentLevel.UpdateDead(gameTime);
-            else currentLevel.UpdateDead(gameTime);
+           currentLevel.Update(gameTime);
+
 
             base.Update(gameTime);
         }
@@ -79,8 +79,7 @@ namespace GameDevTVGameJam2022
             SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, null, null, null, null, camera.transform);
 
             //Draw Level
-            if (currentLevel.player.Alive) currentLevel.Draw(SpriteBatch);
-            else currentLevel.DrawDead(SpriteBatch);
+            currentLevel.Draw(SpriteBatch);
 
             SpriteBatch.End();
 
