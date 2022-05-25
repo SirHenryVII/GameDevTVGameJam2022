@@ -13,10 +13,12 @@ namespace GameDevTVGameJam2022
         public Rectangle HitBox;
         public Texture2D Image;
         public bool Alive;
+        public bool Harmful;
 
-        public Tile(Texture2D image)
+        public Tile(Texture2D image, bool harmful)
         {
             Image = image;
+            Harmful = harmful;
         }
 
         public abstract void Update(GameTime gametime);

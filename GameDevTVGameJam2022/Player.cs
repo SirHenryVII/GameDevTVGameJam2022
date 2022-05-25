@@ -31,7 +31,7 @@ namespace GameDevTVGameJam2022
         public int Lives;
 
         bool dashReady = true;
-        TimeSpan dashInterval = TimeSpan.FromMilliseconds(100);
+        TimeSpan dashInterval = TimeSpan.FromMilliseconds(160);
         TimeSpan dashTimeElapsed = TimeSpan.Zero;
         TimeSpan startTime;
 
@@ -71,6 +71,12 @@ namespace GameDevTVGameJam2022
                         velocity.Y = 0;
                         check = true;
                         HitBox.Y = tile.HitBox.Top - (int)(image.Height * imageScale) + 1;
+
+                        if (tile.Harmful)
+                        {
+                            Alive = false;
+                            deathCounter = 150;
+                        }
                     }
                 }
                 if (!check)
@@ -155,8 +161,8 @@ namespace GameDevTVGameJam2022
                     dashReady = false;
 
                     velocity.Y = 0;
-                    if (direction == SpriteEffects.None) velocity.X = 23;
-                    else velocity.X = -28;
+                    if (direction == SpriteEffects.None) velocity.X = 29;
+                    else velocity.X = -29;
 
                     dashTimeElapsed = TimeSpan.Zero;
                 }
