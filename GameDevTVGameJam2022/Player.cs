@@ -20,36 +20,33 @@ namespace GameDevTVGameJam2022
         }
         PlayerStates playerState = PlayerStates.Idle;
 
-        public Texture2D image;
+        public Texture2D image = Textures.Player;
         public Color tint;
 
         public Rectangle HitBox;
         public Vector2 velocity;
         public bool onGround;
-        public SpriteEffects direction;
-        public bool Alive;
+        public SpriteEffects direction = SpriteEffects.None;
+        public bool Alive = true;
         public int Lives;
 
         bool dashReady = true;
-        TimeSpan dashInterval = TimeSpan.FromMilliseconds(160);
+        TimeSpan dashInterval = TimeSpan.FromMilliseconds(120);
         TimeSpan dashTimeElapsed = TimeSpan.Zero;
         TimeSpan startTime;
 
-        public Rectangle deathCounterRect;
+        private Rectangle deathCounterRect;
         private int deathCounter;
-        private Texture2D pixel;
+        private Texture2D pixel = Textures.Pixel;
         private double imageScale;
+        private float transparency = 1f;
 
         private float velocityCapX = 10f;
 
         public Player(Vector2 pos, Color Tint, double scale, int lives)
         {
-            image = Textures.Player;
-            pixel = Textures.Pixel;
             tint = Tint;
             HitBox = new Rectangle((int)pos.X, (int)pos.Y, (int)(image.Width * scale), (int)(image.Height * scale));
-            direction = SpriteEffects.None;
-            Alive = true;
             Lives = lives;
             imageScale = scale;
         }
@@ -58,6 +55,7 @@ namespace GameDevTVGameJam2022
         {
             dashTimeElapsed += gameTime.ElapsedGameTime;
 
+            #region Collision Logic
             //Collision Logic
             Rectangle FloorPlayerHitBox = new Rectangle(HitBox.X, HitBox.Y + (int)(image.Height * imageScale) - 10, (int)(image.Width * imageScale), 10);
             if (Alive)
@@ -76,6 +74,24 @@ namespace GameDevTVGameJam2022
                         {
                             Alive = false;
                             deathCounter = 150;
+                            Lives -= 1;
+                        }
+                    }
+                }
+                foreach (Tile tile in Game1.currentLevel.BothTileList)
+                {
+                    if (FloorPlayerHitBox.Intersects(tile.HitBox) && velocity.Y >= 0)
+                    {
+                        onGround = true;
+                        velocity.Y = 0;
+                        check = true;
+                        HitBox.Y = tile.HitBox.Top - (int)(image.Height * imageScale) + 1;
+
+                        if (tile.Harmful)
+                        {
+                            Alive = false;
+                            deathCounter = 150;
+                            Lives -= 1;
                         }
                     }
                 }
@@ -97,11 +113,30 @@ namespace GameDevTVGameJam2022
                         HitBox.Y = tile.HitBox.Top - (int)(image.Height * imageScale) + 1;
                     }
                 }
+                foreach (Tile tile in Game1.currentLevel.BothTileList)
+                {
+                    if (FloorPlayerHitBox.Intersects(tile.HitBox) && velocity.Y >= 0)
+                    {
+                        onGround = true;
+                        velocity.Y = 0;
+                        check = true;
+                        HitBox.Y = tile.HitBox.Top - (int)(image.Height * imageScale) + 1;
+
+                        if (tile.Harmful)
+                        {
+                            Alive = false;
+                            deathCounter = 150;
+                            Lives -= 1;
+                        }
+                    }
+                }
                 if (!check)
                 {
                     onGround = false;
                 }
             }
+
+            #endregion
             //Set dashReady
             if (!dashReady && playerState != PlayerStates.Dashing && onGround)
             {
@@ -171,11 +206,19 @@ namespace GameDevTVGameJam2022
                 //Death Logic
                 if (!Alive)
                 {
+                    transparency = 0.7f;
                     deathCounterRect = new Rectangle(100, 1000, deathCounter, 30);
                     if (deathCounter == 0)
                     {
                         Alive = true;
+                        transparency = 1f;
                     }
+                }
+
+                //GameOver Logic
+                if(Lives <= 0)
+                {
+                    Game1.currentLevel.Reload();
                 }
             }
             else 
@@ -183,6 +226,9 @@ namespace GameDevTVGameJam2022
                 if (dashTimeElapsed >= dashInterval)
                 {
                     playerState = PlayerStates.Idle;
+
+                    if (direction == SpriteEffects.None) velocity.X = velocityCapX;
+                    else velocity.X = -velocityCapX;
 
                     if (Keyboard.GetState().IsKeyDown(Keys.A) || Keyboard.GetState().IsKeyDown(Keys.D))
                     {
@@ -203,7 +249,7 @@ namespace GameDevTVGameJam2022
         public void Draw(SpriteBatch batch)
         {
             batch.Draw(pixel, deathCounterRect, tint);
-            batch.Draw(image, HitBox, tint);
+            batch.Draw(image, HitBox, tint * transparency);
         }
 
     }
