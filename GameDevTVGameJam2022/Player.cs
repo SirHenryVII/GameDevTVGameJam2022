@@ -70,7 +70,7 @@ namespace GameDevTVGameJam2022
                         onGround = true;
                         velocity.Y = 0;
                         check = true;
-                        HitBox.Y = tile.HitBox.Top - (int)(image.Height * imageScale);
+                        HitBox.Y = tile.HitBox.Top - (int)(image.Height * imageScale) + 1;
                     }
                 }
                 if (!check)
@@ -88,7 +88,7 @@ namespace GameDevTVGameJam2022
                         onGround = true;
                         velocity.Y = 0;
                         check = true;
-                        HitBox.Y = tile.HitBox.Top - (int)(image.Height * imageScale);
+                        HitBox.Y = tile.HitBox.Top - (int)(image.Height * imageScale) + 1;
                     }
                 }
                 if (!check)
