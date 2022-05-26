@@ -16,6 +16,8 @@ namespace GameDevTVGameJam2022
         public static Texture2D Cobblestone;
         public static Texture2D Spike;
         public static Texture2D Pixel;
+        public static Texture2D Goal;
+        public static Texture2D Background;
 
         public static void LoadTextures(ContentManager content)
         {
@@ -25,6 +27,8 @@ namespace GameDevTVGameJam2022
             Cobblestone = content.Load<Texture2D>("Cobble");
             Spike = content.Load<Texture2D>("Spike");
             Pixel = content.Load<Texture2D>("pixel");
+            Goal = content.Load<Texture2D>("Goal");
+            Background = content.Load<Texture2D>("Background");
         }
     }
 }

@@ -7,7 +7,7 @@ namespace GameDevTVGameJam2022
 {
     public class Goal : Tile
     {
-        public Goal(Vector2 pos, int scale, bool alive) : base(Textures.Pixel, false)
+        public Goal(Vector2 pos, int scale, bool alive) : base(Textures.Goal, false)
         {
             HitBox = new Rectangle((int)pos.X, (int)pos.Y, Image.Width * scale, Image.Height * scale);
             Alive = alive;

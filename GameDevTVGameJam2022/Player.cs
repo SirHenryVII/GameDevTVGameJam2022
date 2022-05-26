@@ -56,7 +56,7 @@ namespace GameDevTVGameJam2022
             dashTimeElapsed += gameTime.ElapsedGameTime;
 
             #region Collision Logic
-            //Collision Logic
+            //Collision Logic Y
             Rectangle FloorPlayerHitBox = new Rectangle(HitBox.X, HitBox.Y + (int)(image.Height * imageScale) - 10, (int)(image.Width * imageScale), 10);
             if (Alive)
             {
@@ -134,6 +134,18 @@ namespace GameDevTVGameJam2022
                 {
                     onGround = false;
                 }
+            }
+
+            //Collision Logic X
+            if (HitBox.X < 0)
+            {
+                velocity.X = 0;
+                HitBox.X = 0;
+            }
+            if (HitBox.X > Game1.Graphics.PreferredBackBufferWidth - (int)(image.Width * imageScale))
+            {
+                velocity.X = 0;
+                HitBox.X = Game1.Graphics.PreferredBackBufferWidth - (int)(image.Width * imageScale);
             }
 
             #endregion

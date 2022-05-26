@@ -46,6 +46,7 @@ namespace GameDevTVGameJam2022
 
         public void Draw(SpriteBatch batch)
         {
+            batch.Draw(Textures.Background, new Vector2(0), null, Color.White, 0f, new Vector2(0), 13f, SpriteEffects.None, 0f);
             foreach (Tile tile in BothTileList)
             {
                 tile.Draw(batch, 1f);
@@ -65,14 +66,14 @@ namespace GameDevTVGameJam2022
             }
             else
             {
-                foreach (Tile tile in BothTileList)
+                foreach (Tile tile in DeadTileList)
                 {
                     tile.Draw(batch, 1f);
                 }
 
-                foreach (Tile tile in DeadTileList)
+                foreach (Tile tile in AliveTileList)
                 {
-                    tile.Draw(batch, 1f);
+                    tile.Draw(batch, 0.3f);
                 }
             }
 
