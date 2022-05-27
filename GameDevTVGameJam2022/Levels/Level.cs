@@ -16,13 +16,15 @@ namespace GameDevTVGameJam2022
 
 
         private Vector2 playerSpawnPos;
+        public int Lives;
 
         public Player player;
 
         public Level(int lives, Vector2 playerspawnpos)
         {
-            player = new Player(playerspawnpos, Color.White, 0.5, 3);
             playerSpawnPos = playerspawnpos;
+            Lives = lives;
+            player = new Player(playerspawnpos, Color.White, 0.5, lives);
         }
         public void Update(GameTime gameTime)
         {
@@ -46,7 +48,6 @@ namespace GameDevTVGameJam2022
 
         public void Draw(SpriteBatch batch)
         {
-            batch.Draw(Textures.Background, new Vector2(0), null, Color.White, 0f, new Vector2(0), 13f, SpriteEffects.None, 0f);
             foreach (Tile tile in BothTileList)
             {
                 tile.Draw(batch, 1f);
@@ -82,7 +83,7 @@ namespace GameDevTVGameJam2022
 
         public void Reload()
         {
-            player = new Player(playerSpawnPos, Color.White, 0.5, 3);
+            player = new Player(playerSpawnPos, Color.White, 0.5, Game1.currentLevel.Lives);
         }
     }
 }

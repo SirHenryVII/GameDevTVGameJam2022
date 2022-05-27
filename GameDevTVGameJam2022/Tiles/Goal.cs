@@ -16,9 +16,8 @@ namespace GameDevTVGameJam2022
         {
             if (HitBox.Intersects(Game1.currentLevel.player.HitBox))
             {
-                if (Game1.currentLevel is Level1)
-                {
-                }
+                if (Game1.currentLevel is Level1) Game1.currentLevel = new Level2();
+                else if (Game1.currentLevel is Level2) Game1.currentLevel = new Level3();
             }
         }
     }

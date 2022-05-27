@@ -76,6 +76,7 @@ namespace GameDevTVGameJam2022
                             deathCounter = 150;
                             Lives -= 1;
                         }
+                        break;
                     }
                 }
                 foreach (Tile tile in Game1.currentLevel.BothTileList)
@@ -93,6 +94,7 @@ namespace GameDevTVGameJam2022
                             deathCounter = 150;
                             Lives -= 1;
                         }
+                        break;
                     }
                 }
                 if (!check)
@@ -111,6 +113,7 @@ namespace GameDevTVGameJam2022
                         velocity.Y = 0;
                         check = true;
                         HitBox.Y = tile.HitBox.Top - (int)(image.Height * imageScale) + 1;
+                        break;
                     }
                 }
                 foreach (Tile tile in Game1.currentLevel.BothTileList)
@@ -128,6 +131,7 @@ namespace GameDevTVGameJam2022
                             deathCounter = 150;
                             Lives -= 1;
                         }
+                        break;
                     }
                 }
                 if (!check)
@@ -150,12 +154,12 @@ namespace GameDevTVGameJam2022
 
             #endregion
             //Set dashReady
-            if (!dashReady && playerState != PlayerStates.Dashing && onGround)
+            if (!dashReady && playerState != PlayerStates.Dashing && onGround && playerState != PlayerStates.DashingUp)
             {
                 dashReady = true;
             }
             
-            if (playerState != PlayerStates.Dashing)
+            if (playerState != PlayerStates.Dashing && playerState != PlayerStates.DashingUp)
             {
                 #region Slow Velocity X
 
@@ -189,12 +193,14 @@ namespace GameDevTVGameJam2022
                     if (onGround) velocity.X += 2;
                     else velocity.X += 1;
                     direction = SpriteEffects.None;
+                    playerState = PlayerStates.Walking;
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.A) && velocity.X > velocityCapX * -1)
                 {
                     if (onGround) velocity.X -= 2;
                     else velocity.X -= 1;
                     direction = SpriteEffects.FlipHorizontally;
+                    playerState = PlayerStates.Walking;
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.Space) && onGround)
                 {
@@ -202,14 +208,28 @@ namespace GameDevTVGameJam2022
                     onGround = false;
                 }
 
-                if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) && dashReady && Alive)
+                if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) && dashReady && Alive && !onGround)
                 {
-                    playerState = PlayerStates.Dashing;
+                    if (!Keyboard.GetState().IsKeyDown(Keys.W))
+                    {
+                        playerState = PlayerStates.Dashing;
+                        dashReady = false;
+
+                        velocity.Y = 0;
+                        if (direction == SpriteEffects.None) velocity.X = 29;
+                        else velocity.X = -29;
+
+                        dashTimeElapsed = TimeSpan.Zero;
+                    }
+                }
+
+                if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) && Keyboard.GetState().IsKeyDown(Keys.W) && dashReady && !Alive && !onGround)
+                {
+                    playerState = PlayerStates.DashingUp;
                     dashReady = false;
 
-                    velocity.Y = 0;
-                    if (direction == SpriteEffects.None) velocity.X = 29;
-                    else velocity.X = -29;
+                    velocity.X = 0;
+                    velocity.Y = -23;
 
                     dashTimeElapsed = TimeSpan.Zero;
                 }
@@ -237,15 +257,15 @@ namespace GameDevTVGameJam2022
             {
                 if (dashTimeElapsed >= dashInterval)
                 {
+                    if (playerState == PlayerStates.Dashing)
+                    {
+                        if (direction == SpriteEffects.None) velocity.X = velocityCapX;
+                        else velocity.X = -velocityCapX;
+                    }
+                    else velocity.Y = -10;
+
                     playerState = PlayerStates.Idle;
 
-                    if (direction == SpriteEffects.None) velocity.X = velocityCapX;
-                    else velocity.X = -velocityCapX;
-
-                    if (Keyboard.GetState().IsKeyDown(Keys.A) || Keyboard.GetState().IsKeyDown(Keys.D))
-                    {
-                        playerState = PlayerStates.Walking;
-                    }
                 }
 
                 dashTimeElapsed += gameTime.ElapsedGameTime;
